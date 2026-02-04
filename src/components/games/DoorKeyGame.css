@@ -1,0 +1,849 @@
+/* Hidden Maze Game Styles */
+.doorkey-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.doorkey-modal {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 32px 64px rgba(0, 0, 0, 0.3);
+    position: relative;
+    transition: background 0.3s ease;
+}
+
+/* Wall hit animation */
+.doorkey-modal.wall-hit {
+    background: rgba(255, 100, 100, 0.95);
+    animation: flashRed 0.5s ease-in-out;
+}
+
+@keyframes flashRed {
+
+    0%,
+    100% {
+        background: rgba(255, 255, 255, 0.95);
+    }
+
+    50% {
+        background: rgba(255, 100, 100, 0.95);
+    }
+}
+
+/* Dark mode support */
+[data-theme="dark"] .doorkey-modal {
+    background: rgba(24, 24, 27, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .doorkey-modal.wall-hit {
+    background: rgba(139, 69, 19, 0.95);
+}
+
+/* Loading state */
+.doorkey-loading {
+    text-align: center;
+    padding: 3rem 2rem;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Header */
+.doorkey-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .doorkey-header {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.doorkey-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.doorkey-title svg {
+    color: #4F46E5;
+}
+
+.doorkey-title h2 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.doorkey-close {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #EF4444;
+    border-radius: 12px;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.doorkey-close:hover {
+    background: rgba(239, 68, 68, 0.2);
+    transform: scale(1.05);
+}
+
+/* Stats */
+.doorkey-stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.doorkey-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    backdrop-filter: blur(10px);
+}
+
+[data-theme="dark"] .doorkey-stat {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.doorkey-stat svg {
+    color: #6B7280;
+}
+
+.doorkey-stat--streak {
+    background: linear-gradient(135deg, rgba(255, 204, 0, 0.2), rgba(255, 167, 38, 0.2));
+    border-color: rgba(255, 204, 0, 0.3);
+    color: #F59E0B;
+}
+
+.doorkey-stat--streak svg {
+    color: #F59E0B;
+}
+
+.doorkey-stat--timer {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(99, 102, 241, 0.2));
+    border-color: rgba(59, 130, 246, 0.3);
+    color: #3B82F6;
+}
+
+.doorkey-stat--timer svg {
+    color: #3B82F6;
+}
+
+.doorkey-stat--urgent {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2));
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #EF4444;
+    animation: pulse 1s infinite;
+}
+
+.doorkey-stat--urgent svg {
+    color: #EF4444;
+}
+
+.doorkey-rules-btn {
+    background: rgba(79, 70, 229, 0.1);
+    border: 1px solid rgba(79, 70, 229, 0.2);
+    color: #4F46E5;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.doorkey-rules-btn:hover {
+    background: rgba(79, 70, 229, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Rules */
+.doorkey-rules {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(99, 102, 241, 0.05));
+    border: 1px solid rgba(79, 70, 229, 0.2);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+[data-theme="dark"] .doorkey-rules {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(99, 102, 241, 0.1));
+}
+
+.doorkey-rules h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.75rem 0;
+}
+
+.doorkey-rules h3:not(:first-child) {
+    margin-top: 1.25rem;
+}
+
+.doorkey-rules ul {
+    margin: 0;
+    padding-left: 1.25rem;
+}
+
+.doorkey-rules li {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+/* Question */
+.doorkey-question {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+[data-theme="dark"] .doorkey-question {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.doorkey-question h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 1rem 0;
+}
+
+.doorkey-question p {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+}
+
+.doorkey-constraint {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-family: 'Inter', sans-serif;
+    color: #F59E0B;
+    font-weight: 500;
+}
+
+/* Doors Grid */
+.doorkey-doors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.doorkey-door {
+    background: rgba(255, 255, 255, 0.7);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+[data-theme="dark"] .doorkey-door {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.doorkey-door:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    border-color: rgba(79, 70, 229, 0.3);
+}
+
+.doorkey-door--selected {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(99, 102, 241, 0.1));
+    border-color: #4F46E5;
+    transform: translateY(-2px);
+}
+
+.doorkey-door-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.doorkey-door-name {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.doorkey-door-combinations {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.doorkey-combo {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+    padding: 0.25rem 0.5rem;
+}
+
+[data-theme="dark"] .doorkey-combo {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Special Options */
+.doorkey-special-options {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.doorkey-special-btn {
+    background: rgba(239, 68, 68, 0.1);
+    border: 2px solid rgba(239, 68, 68, 0.2);
+    color: #EF4444;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.doorkey-special-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+    transform: translateY(-2px);
+}
+
+.doorkey-special-btn--selected {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #EF4444;
+}
+
+/* Key Input */
+.doorkey-key-input {
+    margin-bottom: 1.5rem;
+}
+
+.doorkey-key-input label {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.doorkey-key-input input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .doorkey-key-input input {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.doorkey-key-input input:focus {
+    outline: none;
+    border-color: #4F46E5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Errors */
+.doorkey-errors {
+    margin-bottom: 1.5rem;
+}
+
+.doorkey-error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #DC2626;
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Success */
+/* Success Popup Overlay */
+.doorkey-success-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 1rem;
+}
+
+.doorkey-success-popup {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.95));
+    border: 2px solid #10B981;
+    border-radius: 24px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    max-width: 450px;
+    width: 100%;
+    box-shadow: 0 32px 64px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(16, 185, 129, 0.3),
+        0 0 40px rgba(16, 185, 129, 0.4);
+}
+
+[data-theme="dark"] .doorkey-success-popup {
+    background: linear-gradient(135deg, rgba(24, 24, 27, 0.98), rgba(24, 24, 27, 0.95));
+    border-color: #10B981;
+}
+
+.doorkey-success-popup svg {
+    color: #10B981;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 4px 12px rgba(16, 185, 129, 0.4));
+}
+
+.doorkey-success-popup h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 1.5rem 0;
+}
+
+.doorkey-success-popup p {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-secondary);
+    margin: 0.75rem 0;
+    font-size: 1rem;
+}
+
+.doorkey-success-popup .completion-time {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.doorkey-success-popup .completion-time strong {
+    color: #10B981;
+    font-size: 1.75rem;
+    font-weight: 700;
+    display: block;
+    margin-top: 0.5rem;
+}
+
+.doorkey-success-popup .streak-info {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+.doorkey-success-popup .streak-info strong {
+    color: #F59E0B;
+    font-weight: 700;
+}
+
+.doorkey-success-popup .next-challenge {
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+}
+
+.doorkey-success-popup button {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.doorkey-explanation {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+    text-align: left;
+}
+
+[data-theme="dark"] .doorkey-explanation {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.doorkey-explanation strong {
+    color: var(--text-primary);
+}
+
+/* Actions */
+.doorkey-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.doorkey-btn {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.doorkey-btn--primary {
+    background: linear-gradient(135deg, #4F46E5, #6366F1);
+    color: white;
+    box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
+}
+
+.doorkey-btn--primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+}
+
+.doorkey-btn--primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
+}
+
+.doorkey-btn--secondary {
+    background: rgba(107, 114, 128, 0.1);
+    color: var(--text-primary);
+    border: 1px solid rgba(107, 114, 128, 0.2);
+}
+
+.doorkey-btn--secondary:hover {
+    background: rgba(107, 114, 128, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .doorkey-modal {
+        padding: 1.5rem;
+        margin: 1rem;
+        max-height: 95vh;
+    }
+
+    .doorkey-doors-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .doorkey-stats {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .maze-grid {
+        max-width: 280px;
+    }
+
+    .maze-cell {
+        min-height: 60px;
+    }
+}
+
+/* Game Status */
+.maze-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(79, 70, 229, 0.1);
+    border: 1px solid rgba(79, 70, 229, 0.2);
+    border-radius: 12px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #4F46E5;
+}
+
+.status-message {
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: rgba(34, 197, 94, 0.1);
+    color: #059669;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+/* Dynamic Maze Grid */
+.maze-grid {
+    display: grid;
+    gap: 3px;
+    background: #2d3748;
+    border: 3px solid #4a5568;
+    border-radius: 15px;
+    padding: 10px;
+    max-width: 450px;
+    margin: 0 auto 1.5rem;
+    aspect-ratio: 1;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.maze-cell {
+    background: #4a5568;
+    border: 2px solid #5a6374;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 65px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.maze-cell:hover {
+    background: #5a6374;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.maze-cell.visited {
+    background: #2d3748 !important;
+    border-color: #4a5568;
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.maze-cell.door-unlocked {
+    background: rgba(34, 197, 94, 0.2);
+    border-color: #22c55e;
+    animation: pulseGreen 2s infinite;
+}
+
+.maze-cell.door-locked {
+    background: rgba(239, 68, 68, 0.3) !important;
+    border-color: #ef4444 !important;
+    animation: pulseRed 2s infinite;
+}
+
+@keyframes pulseRed {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+    }
+}
+
+@keyframes pulseGreen {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+    }
+}
+
+/* Game Icons */
+.player-icon {
+    color: #4F46E5;
+    filter: drop-shadow(0 0 8px rgba(79, 70, 229, 0.6));
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+.key-icon {
+    color: #f59e0b;
+    filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6));
+    animation: sparkle 3s infinite;
+}
+
+@keyframes sparkle {
+
+    0%,
+    100% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    25% {
+        transform: rotate(-5deg) scale(1.1);
+    }
+
+    75% {
+        transform: rotate(5deg) scale(1.1);
+    }
+}
+
+.door-icon {
+    transition: all 0.3s ease;
+}
+
+.door-icon.locked {
+    color: #6b7280;
+}
+
+.door-icon.unlocked {
+    color: #22c55e;
+    filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.6));
+    animation: glow 2s infinite;
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.6));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 16px rgba(34, 197, 94, 0.8));
+    }
+}
+
+/* Instructions */
+.maze-instructions {
+    text-align: center;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+}
+
+[data-theme="dark"] .maze-instructions {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.maze-instructions p {
+    margin: 0.5rem 0;
+    font-weight: 500;
+}
+
+.controls-hint {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.doorkey-actions {
+    flex-direction: column;
+}
+
+.doorkey-title h2 {
+    font-size: 1.25rem;
+}
+}
+
+@media (max-width: 480px) {
+    .doorkey-modal {
+        padding: 1rem;
+        margin: 0.5rem;
+    }
+
+    .doorkey-door {
+        padding: 1rem;
+    }
+
+    .doorkey-door-icon {
+        font-size: 1.5rem;
+    }
+}

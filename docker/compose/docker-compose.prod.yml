@@ -1,0 +1,156 @@
+# ==============================================
+# Docker Compose - Production Environment
+# ==============================================
+# Use: docker compose -f docker-compose.prod.yml up -d
+
+services:
+  # PostgreSQL Database with Production Settings
+  db:
+    image: postgres:16-alpine
+    container_name: cohort_db_prod
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cohort_db}
+      POSTGRES_USER: ${POSTGRES_USER:-cohort_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cohort_user} -d ${POSTGRES_DB:-cohort_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '1'
+          memory: 1G
+
+  # Redis Cache for Production
+  redis:
+    image: redis:7-alpine
+    container_name: cohort_redis_prod
+    command: >
+      redis-server
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD}
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+
+  # Django Backend with Gunicorn
+  backend:
+    build:
+      context: ../..
+      dockerfile: docker/dockerfiles/backend.Dockerfile
+      target: production
+    environment:
+      - DEBUG=False
+      - DJANGO_ENV=production
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-cohort_user}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-cohort_db}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
+      - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
+    volumes:
+      - backend_static:/app/staticfiles
+      - backend_media:/app/media
+      - backend_logs:/app/logs
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: always
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  # React Frontend with Nginx
+  frontend:
+    build:
+      context: ../..
+      dockerfile: docker/dockerfiles/frontend.Dockerfile
+      target: production
+      args:
+        - VITE_API_URL=${VITE_API_URL}
+    container_name: cohort_frontend_prod
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+
+  # Nginx Load Balancer (Optional - for multiple backend instances)
+  nginx-lb:
+    image: nginx:1.25-alpine
+    container_name: cohort_nginx_lb
+    volumes:
+      - ../configs/nginx-lb.conf:/etc/nginx/nginx.conf:ro
+      - ../ssl:/etc/nginx/ssl:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  postgres_data:
+    name: cohort_postgres_prod
+  redis_data:
+    name: cohort_redis_prod
+  backend_static:
+    name: cohort_static_prod
+  backend_media:
+    name: cohort_media_prod
+  backend_logs:
+    name: cohort_logs_prod
+
+networks:
+  default:
+    name: cohort_prod_network
+    driver: bridge

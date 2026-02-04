@@ -1,0 +1,18 @@
+# CSV template for importing users
+
+# Required fields:
+#   - email: User email address (must be unique)
+#   - username: Django username (must be unique)
+#
+# Optional fields:
+#   - first_name: User's first name
+#   - last_name: User's last name
+#   - is_staff: Staff status (1/0, true/false)
+#   - is_superuser: Superuser status (1/0, true/false)
+
+email,username,first_name,last_name,is_staff,is_superuser
+john.doe@example.com,john_doe,John,Doe,0,0
+jane.smith@example.com,jane_smith,Jane,Smith,0,0
+admin@example.com,admin,Admin,User,1,1
+teacher1@school.edu,teacher1,Alice,Johnson,1,0
+student1@school.edu,student1,Bob,Williams,0,0
